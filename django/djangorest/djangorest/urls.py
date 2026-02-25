@@ -25,5 +25,5 @@ urlpatterns = [
     path('aiinfo/', views.aiquest_info, name='aiquest_info'),
     path('aicreate/', views.aiquest_create, name='aiquest_create'),
     path('aicreate/<int:pk>/', views.aiquest_create, name='aicreate'),
-    path('aicreate/', views.aiquest_create, name='aicreate'), # for full data
+    # path('aicreate/', views.aiquest_create, name='aicreate'), # for full data
 ]

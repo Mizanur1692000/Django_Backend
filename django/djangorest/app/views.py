@@ -73,7 +73,7 @@ def aiquest_info(request):
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-@api_view(['GET', 'POST'])
+@api_view(['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
 def aiquest_create(request, pk=None):
     if request.method == 'GET':
         id=pk
@@ -99,3 +99,31 @@ def aiquest_create(request, pk=None):
             res= {'msg': 'Successfully inserted data'}
             return Response(res, status=201)
         return Response(serializer.errors, status=400)
+    
+    if request.method == 'PUT':
+        id=pk
+        ai = AiQuest.objects.get(id=id)
+        serializer = AiQuestSerializer(ai, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            res= {'msg': 'Successfully updated full data'}
+            return Response(res)
+        return Response(serializer.errors, status=400)
+
+
+    if request.method == 'PATCH':
+        id=pk
+        ai = AiQuest.objects.get(id=id)
+        serializer = AiQuestSerializer(ai, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            res= {'msg': 'Successfully updated partial data'}
+            return Response(res)
+        return Response(serializer.errors, status=400)
+
+    if request.method == 'DELETE':
+        id=pk
+        ai = AiQuest.objects.get(id=id)
+        ai.delete()
+        res= {'msg': 'Successfully deleted data'}
+        return Response(res, status=204)
