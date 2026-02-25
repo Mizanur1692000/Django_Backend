@@ -70,12 +70,16 @@ def aiquest_info(request):
 #         return HttpResponse(json_data, content_type='application/json')
     
 
-from rest_framework.decorators import api_view
+# from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
-@api_view(['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
-def aiquest_create(request, pk=None):
-    if request.method == 'GET':
+
+# @api_view(['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
+
+# def aiquest_create(request, pk=None):
+class aiquest_create(APIView):
+    def get(self, request, pk=None, format=None):
         id=pk
         if id is not None:
             #complex data
@@ -92,7 +96,7 @@ def aiquest_create(request, pk=None):
         # render Json
         return Response(serializer.data)
     
-    if request.method == 'POST':
+    def post(self, request):
         serializer = AiQuestSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -100,7 +104,7 @@ def aiquest_create(request, pk=None):
             return Response(res, status=201)
         return Response(serializer.errors, status=400)
     
-    if request.method == 'PUT':
+    def put(self, request, pk=None, format=None):
         id=pk
         ai = AiQuest.objects.get(id=id)
         serializer = AiQuestSerializer(ai, data=request.data)
@@ -111,7 +115,7 @@ def aiquest_create(request, pk=None):
         return Response(serializer.errors, status=400)
 
 
-    if request.method == 'PATCH':
+    def patch(self, request, pk=None, format=None):
         id=pk
         ai = AiQuest.objects.get(id=id)
         serializer = AiQuestSerializer(ai, data=request.data, partial=True)
@@ -121,7 +125,7 @@ def aiquest_create(request, pk=None):
             return Response(res)
         return Response(serializer.errors, status=400)
 
-    if request.method == 'DELETE':
+    def delete(self, request, pk=None):
         id=pk
         ai = AiQuest.objects.get(id=id)
         ai.delete()
