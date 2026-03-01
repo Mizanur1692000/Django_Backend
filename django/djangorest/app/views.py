@@ -8,6 +8,15 @@ from django.http import HttpResponse
 from rest_framework.parsers import JSONParser
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.permissions import IsAdminUser
+from rest_framework import viewsets
+
+
+
+class AiQuest_Model_View_Set(viewsets.ModelViewSet):
+    queryset = AiQuest.objects.all()
+    serializer_class = AiQuestSerializer
+    permission_classes = [IsAdminUser]
 
 #Queryset
 def aiquest_info(request):
@@ -79,6 +88,8 @@ from rest_framework.views import APIView
 
 # def aiquest_create(request, pk=None):
 class aiquest_create(APIView):
+    permission_classes = [IsAdminUser]
+
     def get(self, request, pk=None, format=None):
         id=pk
         if id is not None:
